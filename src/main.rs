@@ -15,7 +15,7 @@ lazy_static! {
 
 /// Main entrypoint of benchmarks tool.
 fn main() {
-  let file_name = "/home/dmntk/Work/dmntk/dmntk.metrics/performance/2022-12-16/benchmarks.txt";
+  let file_name = "benchmarks.txt";
   let input = std::fs::read_to_string(file_name).expect("reading input file failed");
   let mut histogram = Histogram::<u64>::new(3).unwrap();
   for line in input.lines() {

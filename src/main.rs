@@ -88,15 +88,15 @@ fn main() {
     }
   }
   println!("=============================================================================");
-  println!("  Total count: {:>10} [ns]", histogram.len());
-  println!("          Min: {:>10} [ns]", histogram.min());
-  println!("          Max: {:>10} [ns]", histogram.max());
-  println!("         Mean: {:>10.0} [ns]", histogram.mean());
-  println!("      Std Dev: {:>10.0} [ns]", histogram.stdev());
+  println!("  Total count: {:>10} [µs]", histogram.len());
+  println!("          Min: {:>10} [µs]", histogram.min());
+  println!("          Max: {:>10} [µs]", histogram.max());
+  println!("         Mean: {:>10.0} [µs]", histogram.mean());
+  println!("      Std Dev: {:>10.0} [µs]", histogram.stdev());
   println!("=============================================================================");
   for v in histogram.iter_recorded() {
     println!(
-      "{:>6.1}'th percentile of data is <= {:>5} [ns]  with {:>5} sample(s)",
+      "{:>6.1}'th percentile of data is <= {:>5} [µs]  with {:>5} sample(s)",
       v.percentile(),
       v.value_iterated_to(),
       v.count_at_value()

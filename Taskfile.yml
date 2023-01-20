@@ -9,3 +9,8 @@ tasks:
     cmds:
       - cmd: cargo +stable run
       - cmd: convert -size 2000x600 benchmarks.svg benchmarks.png
+
+  clippy:
+    desc: Runs clippy for all targets
+    cmds:
+      - cmd: cargo +nightly clippy --workspace --all-targets

@@ -11,6 +11,9 @@ use std::fmt::Write;
 use std::fs;
 
 /// Name of the input file with measured benchmarks.
+const DMNTK_VERSION: &str = "0.1.0";
+
+/// Name of the input file with measured benchmarks.
 const INPUT_FILE_NAME: &str = "benchmarks.txt";
 
 /// Name of the output file with histogram data.
@@ -23,7 +26,7 @@ const OUTPUT_SVG_FILE_NAME: &str = "benchmarks.svg";
 const LINE_PATTERN: &str = r#"test\s+(?P<name>[^\s+]+)[^:]+:\s+(?P<duration>[0-9,]+)\s+(?P<unit>[^/]+)"#;
 
 lazy_static! {
-  static ref RE_LINE: Regex = Regex::new(format!("^{}", LINE_PATTERN).as_str()).unwrap();
+  static ref RE_LINE: Regex = Regex::new(format!("^{LINE_PATTERN}").as_str()).unwrap();
 }
 
 struct Data(String, f32);
@@ -41,7 +44,7 @@ impl BarDatum for Data {
 }
 
 /// Generates the histogram chart in SVG format.
-fn generate_histogram_chart(data: Vec<Data>) {
+fn generate_histogram_chart(data: Vec<Data>, max_value: f32) {
   let width = 2000;
   let height = 600;
   let (top, right, bottom, left) = (90, 40, 50, 60);
@@ -51,13 +54,13 @@ fn generate_histogram_chart(data: Vec<Data>) {
     .set_range(vec![0, width - left - right])
     .set_inner_padding(0.1)
     .set_outer_padding(0.1);
-  let y = ScaleLinear::new().set_domain(vec![0.0, 800.0]).set_range(vec![height - top - bottom, 0]);
+  let y = ScaleLinear::new().set_domain(vec![0.0, max_value]).set_range(vec![height - top - bottom, 0]);
   let view = VerticalBarView::new().set_x_scale(&x).set_y_scale(&y).load_data(&data).unwrap();
   Chart::new()
     .set_width(width)
     .set_height(height)
     .set_margins(top, right, bottom, left)
-    .add_title(String::from("DMNTK v0.0.54 benchmarks"))
+    .add_title(format!("DMNTK v{DMNTK_VERSION} benchmarks"))
     .add_view(&view)
     .add_axis_bottom(&x)
     .add_axis_left(&y)
@@ -76,10 +79,10 @@ fn main() {
       if let Some(_name) = captures.name("name") {
         if let Some(duration) = captures.name("duration") {
           if let Some(unit) = captures.name("unit") {
-            let d = duration.as_str().replace(",", "").parse::<u64>().unwrap();
+            let d = duration.as_str().replace(',', "").parse::<u64>().unwrap();
             let value = match unit.as_str() {
               "ns" => d,
-              other => panic!("unexpected unit: '{}'", other),
+              other => panic!("unexpected unit: '{other}'"),
             };
             histogram += value / 1000;
           }
@@ -138,17 +141,23 @@ fn main() {
 
   println!("\n=============================================================================\n");
 
-  println!("{}   {}", "Percentile", "Microseconds");
+  println!("Percentile   Microseconds");
 
   let mut data = vec![];
+  let mut max_value = 0.0;
   for v in histogram.iter_recorded() {
     let label = format!("{:.2}", v.percentile());
     let value = v.value_iterated_to() as f32;
+    if value > max_value {
+      max_value = value;
+    }
     println!("{:>9}{:>15}", label, v.value_iterated_to());
     data.push(Data(label, value));
   }
 
+  max_value = (max_value / 100.0).round() * 100.0;
+
   println!("\n=============================================================================\n");
 
-  generate_histogram_chart(data);
+  generate_histogram_chart(data, max_value);
 }

@@ -1,5 +1,6 @@
-# dmntk.histogram
-DMNTK | Histogram generator
+**DMNTK** | Decision Model and Notation Toolkit
+
+# Histogram generator
 
 [![MIT licensed][mit-badge]][mit-url]
 [![Apache 2.0 licensed][apache-badge]][apache-url]

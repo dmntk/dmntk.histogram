@@ -14,9 +14,8 @@
 
 ## Overview
 
-Histogram application reads an input file named **benchmarks.txt** placed in directory named **data**.
-
-This input file must contain Rust benchmark results, like in the example shown below:
+Histogram generator reads an input file named **benchmarks.txt** placed in **data** directory.
+Input file must contain results from Rust benchmarks, exactly like in the example shown below:
 
 ```
 test compatibility::dmn_3_0056::_0019   ... bench:       5,255 ns/iter (+/- 64)
@@ -34,13 +33,13 @@ test compatibility::dmn_3_0057::_0002   ... bench:       3,397 ns/iter (+/- 35)
 test compatibility::dmn_3_0057::_0003   ... bench:       1,302 ns/iter (+/- 18)
 ```
 
-As a result, this application generates the following output files (placed in **data** directory): 
+As a result, this application generates output files (placed in **data** directory): 
 
 - **README.md** - performance summary.
 - **benchmarks.hgrm** - histogram data file.
 - **benchmarks.svg** - histogram chart in SVG format.
 
-To generate PNG file, the [ImageMagic](https://imagemagick.org/) can be used:
+To generate PNG file from SVG file, the [ImageMagic](https://imagemagick.org/) can be used:
 
 ```
 $ convert -size 2000x600 data/benchmarks.svg data/benchmarks.png

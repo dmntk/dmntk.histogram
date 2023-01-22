@@ -45,7 +45,7 @@ To generate PNG file, the [ImageMagic](https://imagemagick.org/) can be used:
 $ convert -size 2000x600 data/benchmarks.svg data/benchmarks.png
 ```
 
-There is [Task](https://taskfile.dev) command provided to automate generating the histogram in PNG format.
+There is a [Task](https://taskfile.dev) command provided to automate generating the histogram in PNG format.
 
 ```
 $ task gen

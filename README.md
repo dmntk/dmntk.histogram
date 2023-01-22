@@ -13,10 +13,9 @@ DMNTK | Histogram generator
 
 ## Overview
 
-This application reads an input file named **benchmarks.txt** containing Rust 
-benchmark results and generates histogram data and image.
+Histogram application reads an input file named **benchmarks.txt** placed in directory named **data**.
 
-Example content of **benchmarks.txt** file:
+This input file must contain Rust benchmark results, like in the example shown below:
 
 ```
 test compatibility::dmn_3_0056::_0019   ... bench:       5,255 ns/iter (+/- 64)
@@ -34,50 +33,23 @@ test compatibility::dmn_3_0057::_0002   ... bench:       3,397 ns/iter (+/- 35)
 test compatibility::dmn_3_0057::_0003   ... bench:       1,302 ns/iter (+/- 18)
 ```
 
-Printed output:
+As a result, this application generates the following output files (placed in **data** directory): 
+
+- **README.md** - performance summary.
+- **benchmarks.hgrm** - histogram data file.
+- **benchmarks.svg** - histogram chart in SVG format.
+
+To generate PNG file, the [ImageMagic](https://imagemagick.org/) can be used:
 
 ```
-=============================================================================
-  Total count:         13 [µs]
-          Min:          0 [µs]
-          Max:          5 [µs]
-         Mean:          1 [µs]
-      Std Dev:          1 [µs]
-=============================================================================
-  30.8'th percentile of data is <=     0 [µs]  with     4 sample(s)
-  84.6'th percentile of data is <=     1 [µs]  with     7 sample(s)
-  92.3'th percentile of data is <=     3 [µs]  with     1 sample(s)
- 100.0'th percentile of data is <=     5 [µs]  with     1 sample(s)
-=============================================================================
-
-
-     Value   Percentile    TotalCount    1/(1-Percentile)
-
-         0     0.307692             4          1.44
-         1     0.846154            11          6.50
-         3     0.923077            12         13.00
-         5     1.000000            13           inf
-
-=============================================================================
-
-Percentile   Microseconds
-    30.77              0
-    84.62              1
-    92.31              3
-   100.00              5
-
-=============================================================================
+$ convert -size 2000x600 data/benchmarks.svg data/benchmarks.png
 ```
 
-The histogram is generated in SVG file named **benchmarks.svg**.
-
-To generate PNG file ImageMagic may be used:
+There is [Task](https://taskfile.dev) command provided to automate generating the histogram in PNG format.
 
 ```
-$ convert -size 2000x600 benchmarks.svg benchmarks.png
+$ task gen
 ```
-
-There is `task` command provided that automates generating histogram.
 
 ## License
 

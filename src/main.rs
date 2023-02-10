@@ -11,7 +11,7 @@ use std::fmt::Write;
 use std::fs;
 
 /// Name of the input file with measured benchmarks.
-const DMNTK_VERSION: &str = "0.0.46";
+const DMNTK_VERSION: &str = "0.1.1";
 
 /// Name of the input file with measured benchmarks.
 const INPUT_FILE_NAME: &str = "data/benchmarks.txt";
